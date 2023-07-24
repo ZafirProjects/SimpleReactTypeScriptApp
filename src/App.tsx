@@ -1,10 +1,10 @@
 import { FormEvent, useState } from "react";
 import {} from "./styles.css";
 
-interface Itodos{
-  id: string,
-  title: string,
-  completed: boolean
+interface Itodos {
+  id: string;
+  title: string;
+  completed: boolean;
 }
 
 export default function App() {
@@ -13,11 +13,25 @@ export default function App() {
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
+
     setTodos((currentTodos) => {
       return [
         ...currentTodos,
         { id: crypto.randomUUID(), title: newItem, completed: false },
       ];
+    });
+
+    setNewItem("");
+  }
+
+  function toggleTodo(id: string, completed: boolean) {
+    setTodos((currentTodos) => {
+      return currentTodos.map((todo) => {
+        if (todo.id === id) {
+          return { ...todo, completed };
+        }
+        return todo;
+      });
     });
   }
 
@@ -33,29 +47,27 @@ export default function App() {
             id="item"
           />
         </div>
-        <button className="btn" type="submit">Add</button>
+        <button className="btn" type="submit">
+          Add
+        </button>
       </form>
       <h1 className="header">Todo List</h1>
       <ul className="list">
-        {todos.map((todo)=>{
-          return(<div>
-            {todo.title}
-          </div>)
+        {todos.map((todo) => {
+          return (
+            <li key={todo.id}>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={todo.completed}
+                  onChange={(e) => toggleTodo(todo.id, e.target.checked)}
+                ></input>
+                {todo.title}
+              </label>
+              <button className="btn btn-danger">Delete</button>
+            </li>
+          );
         })}
-        <li>
-          <label>
-            <input type="checkbox"></input>
-            Item 1
-          </label>
-          <button className="btn btn-danger">Delete</button>
-        </li>
-        <li>
-          <label>
-            <input type="checkbox"></input>
-            Item 2
-          </label>
-          <button className="btn btn-danger">Delete</button>
-        </li>
       </ul>
     </>
   );
