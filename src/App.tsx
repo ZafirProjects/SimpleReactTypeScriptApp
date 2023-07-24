@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {} from "./styles.css";
 import TodoForm from "./Components/TodoForm";
 import TodoList from "./Components/TodoList";
@@ -10,9 +10,19 @@ export interface Itodos {
 }
 
 export default function App() {
-  const [todos, setTodos] = useState<Itodos[]>([]);
+  const [todos, setTodos] = useState<Itodos[]>(() => {
+    const localValue = localStorage.getItem("ITEMS");
+    if (localValue == null) {
+      return [];
+    }
+    return JSON.parse(localValue);
+  });
 
-  function addTodo(title:string) {
+  useEffect(() => {
+    localStorage.setItem("ITEMS", JSON.stringify(todos));
+  }, [todos]);
+
+  function addTodo(title: string) {
     setTodos((currentTodos) => {
       return [
         ...currentTodos,
@@ -40,9 +50,13 @@ export default function App() {
 
   return (
     <>
-      <TodoForm onSubmit={addTodo}/>
+      <TodoForm onSubmit={addTodo} />
       <h1 className="header">Todo List</h1>
-      <TodoList todos={todos} onDelete={deleteTodo} onToggleCheckbox={toggleTodo} />
+      <TodoList
+        todos={todos}
+        onDelete={deleteTodo}
+        onToggleCheckbox={toggleTodo}
+      />
     </>
   );
 }

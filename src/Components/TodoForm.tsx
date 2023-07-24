@@ -1,7 +1,7 @@
 import { FormEvent, useState } from "react";
 
 interface IaddTodo {
-  onSubmit: Function;
+  onSubmit: (title: string) => void;
 }
 
 export default function TodoForm({ onSubmit }:IaddTodo) {

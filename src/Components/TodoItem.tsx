@@ -2,8 +2,8 @@ interface IitemComponents {
   completed: boolean;
   id: string;
   title: string;
-  onToggleCheckbox: Function;
-  onDelete: Function;
+  onToggleCheckbox: (id: string, completed: boolean) => void;
+  onDelete: (id: string) => void;
 }
 
 export default function TodoItem({

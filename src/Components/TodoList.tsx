@@ -3,8 +3,8 @@ import TodoItem from "./TodoItem";
 
 interface ItodoFunctions {
   todos: Itodos[];
-  onDelete: Function;
-  onToggleCheckbox: Function;
+  onDelete: (id: string) => void;
+  onToggleCheckbox: (id: string, completed: boolean) => void;
 }
 
 export default function TodoList({
